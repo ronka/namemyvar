@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "chalk": "^5.2.0",
+    "commander": "^10.0.0",
+    "openai": "^3.2.1"
+  },
+  "name": "namemyvar",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "devDependencies": {
+    "typescript": "^4.9.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ronka/namemyvar.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ronka/namemyvar/issues"
+  },
+  "homepage": "https://github.com/ronka/namemyvar#readme",
+  "description": ""
+}
