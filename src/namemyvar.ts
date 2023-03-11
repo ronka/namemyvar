@@ -4,6 +4,21 @@ import chalk from "chalk";
 import { program } from "commander";
 import fetch from "node-fetch";
 
+program
+  .version("1.0.0")
+  .description(
+    "Let AI name your variables, give a description and it will do the rest"
+  )
+  .option(
+    "-c, --context <context>",
+    "in which context the name is going to be used"
+  )
+  .option(
+    "-t, --type <type>",
+    "the type of the variable(boolean, function, number etc)"
+  )
+  .parse(process.argv);
+
 const OPENAI_KEY = process.env.OPENAI_KEY;
 
 export async function main() {
