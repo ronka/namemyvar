@@ -32,12 +32,12 @@ namemyvar <code-description> [options]
 ### Options
 
 - `--type, -t`: The type of the variable, such as boolean, function, number, etc.
-- `--language, -l`: The language in which the variable name is going to be used.
+- `--context, -c`: The context in which the variable name is going to be used.
 
 ### Examples
 
 ```bash
-namemyvar check if reached limit of comments per day -t boolean -l javascript
+namemyvar check if reached limit of comments per day -t boolean -c javascript
 
 Generating name ...
 

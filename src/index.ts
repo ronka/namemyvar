@@ -8,8 +8,8 @@ program
     "Let AI name your variables, give a description and it will do the rest"
   )
   .option(
-    "-l, --language <language>",
-    "in which language the name is going to be used"
+    "-c, --context <context>",
+    "in which context the name is going to be used"
   )
   .option(
     "-t, --type <type>",

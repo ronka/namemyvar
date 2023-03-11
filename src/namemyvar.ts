@@ -10,12 +10,12 @@ export async function main() {
   const options = program.opts();
 
   const input = program.args.join(" ");
-  const language = options.language ? `written in ${options.language}` : "";
+  const context = options.context ? `written in ${options.context}` : "";
   const type = options.type ?? "peace of code";
 
   const prompt = `You're a software architect who reads Clean Code and knows how to name variables appropriately.
   Do not add anything to the suggested name. Print only the suggested name, print one word, no special characters, no parentheses.
-  Give name to a ${type} ${language} that does this: ${input}`;
+  Give name to a ${type} ${context} that does this: ${input}`;
 
   console.log("Generating name ...\n");
 
