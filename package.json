@@ -1,6 +1,6 @@
 {
   "name": "namemyvar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Let AI name your variables, give a description and it will do the rest",
   "files": [
     "bin"
