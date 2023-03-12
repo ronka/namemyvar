@@ -85,7 +85,7 @@ async function generateName(prompt: string) {
 }
 
 function isValidName(str: string) {
-  return str.split("").length === 1;
+  return str.split(" ").length === 1;
 }
 
 function functionCleanName(str: string) {
