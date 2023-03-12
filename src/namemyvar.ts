@@ -22,6 +22,11 @@ program
 const OPENAI_KEY = process.env.OPENAI_KEY;
 
 export async function main() {
+  if (!OPENAI_KEY) {
+    console.log(chalk.red("▪ ") + "OPENAI_KEY is not set");
+    return;
+  }
+
   const options = program.opts();
 
   const input = program.args.join(" ");
