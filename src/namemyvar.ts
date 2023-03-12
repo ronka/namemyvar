@@ -81,9 +81,19 @@ async function generateName(prompt: string) {
     throw new Error("Invalid name generated");
   }
 
-  return aiName.replace(/(\r\n|\n|\r)/gm, "");
+  return functionCleanName(aiName);
 }
 
 function isValidName(str: string) {
   return str.split("").length === 1;
+}
+
+function functionCleanName(str: string) {
+  return (
+    str
+      // trim
+      .replace(/(\r\n|\n|\r)/gm, "")
+      // clean parenthesis
+      .replace(/\(|\)/gm, "")
+  );
 }
