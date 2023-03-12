@@ -1,11 +1,11 @@
 {
   "name": "namemyvar",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Let AI name your variables, give a description and it will do the rest",
   "files": [
-    "bin"
+    "dist"
   ],
-  "bin": "bin/index.js",
+  "bin": "dist/index.js",
   "repository": "https://github.com/ronka/namemyvar",
   "author": "Ron Kantor (@ronka)",
   "license": "MIT",
