@@ -44,7 +44,7 @@ export async function main() {
 
     console.log(chalk.green("▪ ") + name);
   } catch (e) {
-    console.log(chalk.red("▪ ") + "error occured, please try again");
+    console.log(chalk.red("▪ ") + e.message);
   }
 }
 
@@ -83,7 +83,7 @@ async function generateName(prompt: string) {
   const aiName = choices[0].text;
 
   if (!isValidName(aiName)) {
-    throw new Error("Invalid name generated");
+    throw new Error(`Invalid name generated, ${aiName} try again`);
   }
 
   return functionCleanName(aiName);
