@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import chalk from "chalk";
-import { program } from "commander";
-import fetch from "node-fetch";
+import { OptionValues, program } from "commander";
+import openai from "./openai";
 
 program
   .version("1.0.0")
@@ -29,13 +29,7 @@ export async function main() {
 
   const options = program.opts();
 
-  const input = program.args.join(" ");
-  const context = options.context ? `written in ${options.context}` : "";
-  const type = options.type ?? "peace of code";
-
-  const prompt = `You're a software architect who reads Clean Code and knows how to name variables appropriately.
-  Do not add anything to the suggested name. Print only the suggested name, print one word, no special characters, no parentheses.
-  Give name to a ${type} ${context} that does this: ${input}`;
+  const prompt = generatePrompt(options);
 
   console.log("Generating name ...\n");
 
@@ -52,6 +46,11 @@ async function generateName(prompt: string) {
   const payload = {
     model: "text-davinci-003",
     prompt,
+  };
+
+  const completion = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: [{ role: "user", content: prompt }],
     temperature: 0.7,
     top_p: 1,
     frequency_penalty: 0,
@@ -59,34 +58,35 @@ async function generateName(prompt: string) {
     max_tokens: 200,
     stream: false,
     n: 1,
-  };
-
-  const response = await fetch("https://api.openai.com/v1/completions", {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${OPENAI_KEY ?? ""}`,
-    },
-    method: "POST",
-    body: JSON.stringify(payload),
   });
 
-  if (response.status !== 200) {
-    const error = await response.json();
+  if (completion.status !== 200) {
+    const error = await completion.statusText;
 
     throw new Error(
-      `OpenAI API failed while processing the request '${error?.error?.message}'`
+      `OpenAI API failed while processing the request '${error}'`
     );
   }
 
-  const { choices } = await response.json();
+  const { choices } = completion.data;
 
-  const aiName = choices[0].text;
+  const aiName = choices[0].message.content;
 
   if (!isValidName(aiName)) {
     throw new Error(`Invalid name generated, ${aiName} try again`);
   }
 
   return functionCleanName(aiName);
+}
+
+function generatePrompt(options: OptionValues) {
+  const input = program.args.join(" ");
+  const context = options.context ? `written in ${options.context}` : "";
+  const type = options.type ?? "peace of code";
+
+  return `You're a software architect who reads Clean Code and knows how to name variables appropriately.
+  Do not add anything to the suggested name. Print only the suggested name, print one word, no special characters, no parentheses.
+  Give name to a ${type} ${context} that does this: ${input}`;
 }
 
 function isValidAPIKey(key: string) {
