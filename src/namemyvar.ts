@@ -66,9 +66,10 @@ async function generateName(prompt: string) {
   });
 
   if (response.status !== 200) {
-    const errorJson: any = await response.json();
+    const error = await response.json();
+
     throw new Error(
-      `OpenAI API failed while processing the request '${errorJson?.error?.message}'`
+      `OpenAI API failed while processing the request '${error?.error?.message}'`
     );
   }
 
@@ -76,5 +77,13 @@ async function generateName(prompt: string) {
 
   const aiName = choices[0].text;
 
+  if (!isValidName(aiName)) {
+    throw new Error("Invalid name generated");
+  }
+
   return aiName.replace(/(\r\n|\n|\r)/gm, "");
+}
+
+function isValidName(str: string) {
+  return str.split("").length === 1;
 }
