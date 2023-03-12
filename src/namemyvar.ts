@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 import chalk from "chalk";
-import { OptionValues, program } from "commander";
+import { program } from "commander";
 import openai from "./openai";
+import { generatePrompt, isValidAPIKey, isValidName, cleanName } from "./utils";
 
 program
   .version("1.0.0")
@@ -29,7 +30,9 @@ export async function main() {
 
   const options = program.opts();
 
-  const prompt = generatePrompt(options);
+  const input = program.args.join(" ");
+
+  const prompt = generatePrompt(input, options);
 
   console.log("Generating name ...\n");
 
@@ -43,11 +46,6 @@ export async function main() {
 }
 
 async function generateName(prompt: string) {
-  const payload = {
-    model: "text-davinci-003",
-    prompt,
-  };
-
   const completion = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
     messages: [{ role: "user", content: prompt }],
@@ -76,33 +74,5 @@ async function generateName(prompt: string) {
     throw new Error(`Invalid name generated, ${aiName} try again`);
   }
 
-  return functionCleanName(aiName);
-}
-
-function generatePrompt(options: OptionValues) {
-  const input = program.args.join(" ");
-  const context = options.context ? `written in ${options.context}` : "";
-  const type = options.type ?? "peace of code";
-
-  return `You're a software architect who reads Clean Code and knows how to name variables appropriately.
-  Do not add anything to the suggested name. Print only the suggested name, print one word, no special characters, no parentheses.
-  Give name to a ${type} ${context} that does this: ${input}`;
-}
-
-function isValidAPIKey(key: string) {
-  return key && key.startsWith("sk-");
-}
-
-function isValidName(str: string) {
-  return str.split(" ").length === 1;
-}
-
-function functionCleanName(str: string) {
-  return (
-    str
-      // trim
-      .replace(/(\r\n|\n|\r)/gm, "")
-      // clean parenthesis
-      .replace(/\(|\)/gm, "")
-  );
+  return cleanName(aiName);
 }
