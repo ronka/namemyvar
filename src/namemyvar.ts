@@ -22,7 +22,7 @@ program
 const OPENAI_KEY = process.env.OPENAI_KEY;
 
 export async function main() {
-  if (!OPENAI_KEY) {
+  if (!isValidAPIKey(OPENAI_KEY)) {
     console.log(chalk.red("▪ ") + "OPENAI_KEY is not set");
     return;
   }
@@ -87,6 +87,10 @@ async function generateName(prompt: string) {
   }
 
   return functionCleanName(aiName);
+}
+
+function isValidAPIKey(key: string) {
+  return key && key.startsWith("sk-");
 }
 
 function isValidName(str: string) {
